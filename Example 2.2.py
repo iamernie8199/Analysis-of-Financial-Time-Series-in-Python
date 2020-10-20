@@ -1,9 +1,12 @@
 from math import log
+from statsmodels.tsa.ar_model import AR
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import statsmodels.tsa.api as smt
 import scipy.stats as scs
+
 
 def tsplot(y, lags=None, figsize=(10, 8), style='seaborn'):
     if not isinstance(y, pd.Series):
@@ -27,19 +30,31 @@ def tsplot(y, lags=None, figsize=(10, 8), style='seaborn'):
         plt.tight_layout()
         plt.show()
 
+
 da = pd.read_csv('data/q-gdp4708.txt', delimiter='\s+')
 da['ln(gdp)'] = da['gdp'].apply(lambda x: log(x))
 da['diff-ln(gdp)'] = da['ln(gdp)'].diff()
-da.plot(x ='year', y='ln(gdp)')
-plt.show()
 gdp = da['ln(gdp)']
 tsplot(gdp)
 gdpdif = gdp.diff()[1:]
 tsplot(gdpdif)
 
-t = sm.tsa.stattools.adfuller(gdp,maxlag=10,autolag=None)
-output = pd.DataFrame(index=['Test Statistic Value', "p-value", "Lags Used"], columns=['value'])
-output['value']['Test Statistic Value'] = t[0]
-output['value']['p-value'] = t[1]
+t = sm.tsa.stattools.adfuller(gdp, maxlag=10, autolag=None)
+output = pd.DataFrame(index=['Lags Used', 'Dickey-Fuller', "p-value"], columns=['value'])
 output['value']['Lags Used'] = t[2]
+output['value']['Dickey-Fuller'] = t[0]
+output['value']['p-value'] = t[1]
+print(output)
+
+da2 = pd.read_csv('data/d-sp55008.txt', delimiter='\s+')
+sp5 = da2['close'].apply(lambda x: log(x))
+tsplot(sp5)
+sp5dif = sp5.diff()[1:]
+tsplot(sp5dif)
+# order = AR(sp5dif).select_order(maxlag=20, ic='aic', trend='c', method='mle')
+t = sm.tsa.stattools.adfuller(sp5, regression='ct', maxlag=15, autolag=None)
+output = pd.DataFrame(index=['Lags Used', 'Dickey-Fuller', "p-value"], columns=['value'])
+output['value']['Lags Used'] = t[2]
+output['value']['Dickey-Fuller'] = t[0]
+output['value']['p-value'] = t[1]
 print(output)
