@@ -4,8 +4,8 @@ import statsmodels.tsa.api as smt
 from util import tsplot, tsdiag
 import matplotlib.pyplot as plt
 
-r1 = pd.read_csv('data/w-gs1yr.txt', delimiter='\s+')['rate']
-r3 = pd.read_csv('data/w-gs3yr.txt', delimiter='\s+')['rate']
+r1 = pd.read_csv('../data/w-gs1yr.txt', delimiter='\s+')['rate']
+r3 = pd.read_csv('../data/w-gs3yr.txt', delimiter='\s+')['rate']
 # add constant for fit
 r = sm.add_constant(r1)
 # r_3t = α + β*r_1t + e_t

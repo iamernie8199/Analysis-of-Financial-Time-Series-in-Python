@@ -6,7 +6,7 @@ from statsmodels.tsa.arima.model import ARIMA
 from numpy.polynomial.polynomial import polyroots
 
 # Load data
-gnp = pd.read_csv('data/dgnp82.txt', delimiter='\s+', header=None, names=['gnp'])
+gnp = pd.read_csv('../data/dgnp82.txt', delimiter='\s+', header=None, names=['gnp'])
 # create a time-series object
 gnp = pd.DataFrame({"gnp": gnp['gnp'].to_list()}, index=pd.date_range(start='1947-05', freq='Q', periods=len(gnp)))
 # plot

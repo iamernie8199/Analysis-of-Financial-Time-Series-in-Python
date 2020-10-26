@@ -2,7 +2,7 @@ import pandas as pd
 from util import tsplot, tsdiag
 import statsmodels.api as sm
 
-da = pd.read_csv('data/m-deciles08.txt', delimiter='\s+')
+da = pd.read_csv('../data/m-deciles08.txt', delimiter='\s+')
 d1 = da['CAP1RET']
 tsplot(d1)
 jan = da['date'].apply(lambda x: 1 if x % 10000 // 100 == 1 else 0)

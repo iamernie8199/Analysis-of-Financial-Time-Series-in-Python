@@ -4,7 +4,7 @@ from statsmodels.tsa.arima.model import ARIMA
 from math import sqrt
 from scipy.stats import chi2
 
-ibm = pd.read_csv('data/m-ibm3dx2608.txt', delimiter='\s+')
+ibm = pd.read_csv('../data/m-ibm3dx2608.txt', delimiter='\s+')
 vw = ibm['vwrtn']
 m3 = ARIMA(vw, order=(3, 0, 0))
 res = m3.fit()

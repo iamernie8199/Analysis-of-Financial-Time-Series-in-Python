@@ -26,7 +26,7 @@ def basicStats(x):
     ])
 
 
-ibm = pd.read_csv('data/d-ibm3dx7008.txt', delimiter='\s+')
+ibm = pd.read_csv('../data/d-ibm3dx7008.txt', delimiter='\s+')
 print(ibm.shape)
 print(ibm.head(1))
 sibm = ibm['rtn'] * 100

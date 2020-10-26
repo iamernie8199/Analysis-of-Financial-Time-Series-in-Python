@@ -2,7 +2,7 @@ import pandas as pd
 from statsmodels.stats.diagnostic import acorr_ljungbox
 import numpy as np
 
-ibm = pd.read_csv('data/m-ibm3dx2608.txt', delimiter='\s+')
+ibm = pd.read_csv('../data/m-ibm3dx2608.txt', delimiter='\s+')
 print(ibm.shape)
 print(ibm.head(1))
 # IBM simple returns

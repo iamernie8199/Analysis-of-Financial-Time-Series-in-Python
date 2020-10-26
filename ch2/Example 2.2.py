@@ -31,7 +31,7 @@ def tsplot(y, lags=None, figsize=(10, 8), style='seaborn'):
         plt.show()
 
 
-da = pd.read_csv('data/q-gdp4708.txt', delimiter='\s+')
+da = pd.read_csv('../data/q-gdp4708.txt', delimiter='\s+')
 da['ln(gdp)'] = da['gdp'].apply(lambda x: log(x))
 da['diff-ln(gdp)'] = da['ln(gdp)'].diff()
 gdp = da['ln(gdp)']
@@ -46,7 +46,7 @@ output['value']['Dickey-Fuller'] = t[0]
 output['value']['p-value'] = t[1]
 print(output)
 
-da2 = pd.read_csv('data/d-sp55008.txt', delimiter='\s+')
+da2 = pd.read_csv('../data/d-sp55008.txt', delimiter='\s+')
 sp5 = da2['close'].apply(lambda x: log(x))
 tsplot(sp5)
 sp5dif = sp5.diff()[1:]
