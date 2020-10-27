@@ -1,8 +1,6 @@
 import pandas as pd
 import statsmodels.api as sm
-import statsmodels.tsa.api as smt
-from util import tsplot, tsdiag
-import matplotlib.pyplot as plt
+from util import tsplot
 
 r1 = pd.read_csv('../data/w-gs1yr.txt', delimiter='\s+')['rate']
 r3 = pd.read_csv('../data/w-gs3yr.txt', delimiter='\s+')['rate']
