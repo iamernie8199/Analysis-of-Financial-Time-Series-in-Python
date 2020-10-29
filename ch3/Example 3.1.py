@@ -27,3 +27,6 @@ print(f"unconditional standard error: {sqrt(arch1.params[1] / (1 - arch1.params[
 # fitted volatility series
 arch1.plot()
 plt.show()
+
+arch1t = arch_model(intc, vol='ARCH', p=1, dist='t').fit()
+print(arch1t.summary())
