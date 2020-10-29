@@ -27,14 +27,17 @@ print(f"unconditional standard error: {sqrt(arch1.params[1] / (1 - arch1.params[
 # fitted volatility series
 arch1.plot()
 plt.show()
-# Students’s t
-arch1t = arch_model(intc, vol='ARCH', q=1, dist='t').fit()
-print(arch1t.summary())
 # Obtain 1 to 5-step predictions
-predict = arch1t.forecast(horizon=5)
+predict = arch1.forecast(horizon=5)
 print(predict.mean.tail(1))
 print(predict.variance.tail(1))
 print(predict.residual_variance.tail(1))
+# Students’s t
+arch1t = arch_model(intc, vol='ARCH', q=1, dist='t').fit()
+print(arch1t.summary())
 # fits a GARCH(1,1)
-garch1t = arch_model(intc, vol='GARCH', p=1, q=1, dist='t').fit()
-print(garch1t.summary())
+garch1 = arch_model(intc, vol='GARCH', p=1, q=1).fit()
+print(garch1.summary())
+# Skewed Student’s t
+arch1st = arch_model(intc, vol='ARCH', q=1, dist='skewt').fit()
+print(arch1st.summary())
