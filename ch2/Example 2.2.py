@@ -11,7 +11,7 @@ def tsplot(y, lags=None, figsize=(10, 8), style='seaborn'):
     if not isinstance(y, pd.Series):
         y = pd.Series(y)
     with plt.style.context(style):
-        fig = plt.figure(figsize=figsize)
+        plt.figure(figsize=figsize)
         layout = (3, 2)
         ts_ax = plt.subplot2grid(layout, (0, 0), colspan=2)
         acf_ax = plt.subplot2grid(layout, (1, 0))
