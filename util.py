@@ -34,7 +34,7 @@ def tsplot(y, lags=None, figsize=(10, 8), style='seaborn'):
     if not isinstance(y, pd.Series):
         y = pd.Series(y)
     with plt.style.context(style):
-        fig = plt.figure(figsize=figsize)
+        plt.figure(figsize=figsize)
         layout = (4, 2)
         ts_ax = plt.subplot2grid(layout, (0, 0), colspan=2)
         acf_ax = plt.subplot2grid(layout, (1, 0))
@@ -55,7 +55,7 @@ def tsplot(y, lags=None, figsize=(10, 8), style='seaborn'):
         plt.tight_layout()
         plt.show()
 
-def tsdiag(y, figsize = (14, 8), title = "", lags = 30):
+def tsdiag(y, title = "", lags = 30):
     tmp_data = pd.Series(y)
     tmp_data.index += 1
     tmp_acor = list(sm_stat.diagnostic.acorr_ljungbox(tmp_data, lags = lags, boxpierce = True))
