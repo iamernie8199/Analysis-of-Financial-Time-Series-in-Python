@@ -1,5 +1,4 @@
 from math import log
-from statsmodels.tsa.ar_model import AR
 
 import pandas as pd
 import matplotlib.pyplot as plt
