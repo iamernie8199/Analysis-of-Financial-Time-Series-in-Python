@@ -7,10 +7,11 @@ from math import sqrt
 
 da = pd.read_csv('../data/m-intc7308.txt', delimiter='\s+')
 intc = np.log(da['rtn'] + 1)
-arch3 = arch_model(intc, vol='ARCH', q=3).fit()
+# update_freq=0表示不輸出中間過程
+arch3 = arch_model(intc, vol='ARCH', q=3).fit(update_freq=0)
 print(arch3.summary())
 
-arch1 = arch_model(intc, vol='ARCH', q=1).fit()
+arch1 = arch_model(intc, vol='ARCH', q=1).fit(update_freq=0)
 print(arch1.summary())
 
 stres = arch1.std_resid
