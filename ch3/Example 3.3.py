@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from statsmodels.tsa.arima.model import ARIMA
+from util import ljungbox
 import arch
 
 da = pd.read_fwf('../data/sp500.txt')
@@ -25,11 +26,25 @@ print(ar.summary())
 garch = arch.arch_model(ar.resid, p=1, q=1).fit(update_freq=0)
 print(garch.summary())
 # the implied unconditional variance of a_t
-print(
-    f"unconditional variance of a_t: {garch.params['omega'] / (1 - garch.params['alpha[1]'] - garch.params['beta[1]'])}")
+variance = garch.params['omega'] / (1 - garch.params['alpha[1]'] - garch.params['beta[1]'])
+print(f"unconditional variance of a_t: {round(variance, 5)}")
 
 # dropping all AR parameters
 ar0 = ARIMA(da, order=(0, 0, 0)).fit()
 print(ar0.summary())
 garch = arch.arch_model(ar0.resid, p=1, q=1).fit(update_freq=0)
 print(garch.summary())
+# the implied unconditional variance of a_t
+variance = garch.params['omega'] / (1 - garch.params['alpha[1]'] - garch.params['beta[1]'])
+print(f"unconditional variance of a_t: {round(variance, 5)}")
+# autocorTest
+stres = garch.std_resid
+ljungbox(stres, lags=24)
+ljungbox(stres**2, lags=24)
+# alpha + beta
+print(f"alpha + beta = {garch.params['alpha[1]'] + garch.params['beta[1]']}")
+# Obtain 1 to 5-step predictions
+print('Return:')
+print(ar0.forecast(5))
+print('Volatility:')
+print(garch.forecast(horizon=5).variance.tail(1) ** 0.5)
