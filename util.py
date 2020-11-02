@@ -6,6 +6,7 @@ import statsmodels.api as sm
 import statsmodels.stats as sm_stat
 import scipy.stats as scs
 import numpy as np
+from statsmodels.stats.diagnostic import acorr_ljungbox, het_arch
 
 
 def basicStats(x):
@@ -50,23 +51,40 @@ def tsplot(y, lags=None, figsize=(10, 8), style='seaborn'):
         sm.qqplot(y, line='s', ax=qq_ax)
         qq_ax.set_title('QQ Plot')
         scs.probplot(y, sparams=(y.mean(), y.std()), plot=pp_ax)
-        y.hist(bins=40,ax=hist)
+        y.hist(bins=40, ax=hist)
         hist.set_title('Histogram')
         plt.tight_layout()
         plt.show()
 
-def tsdiag(y, title = "", lags = 30):
+
+def tsdiag(y, title="", lags=30):
     tmp_data = pd.Series(y)
     tmp_data.index += 1
-    tmp_acor = list(sm_stat.diagnostic.acorr_ljungbox(tmp_data, lags = lags, boxpierce = True))
+    tmp_acor = list(sm_stat.diagnostic.acorr_ljungbox(tmp_data, lags=lags, boxpierce=True))
     # Plot Ljung-Box and Box-Pierce statistic p-values:
-    plt.plot(range(1, len(tmp_acor[0]) + 1), tmp_acor[1], 'bo', label = "Ljung-Box values")
-    plt.plot(range(1, len(tmp_acor[0]) + 1), tmp_acor[3], 'go', label = "Box-Pierce values")
-    plt.xticks(np.arange(1,  len(tmp_acor[0]) + 1, 1.0))
-    plt.axhline(y = 0.05, color = "red", label = "5% critical value")
+    plt.plot(range(1, len(tmp_acor[0]) + 1), tmp_acor[1], 'bo', label="Ljung-Box values")
+    plt.plot(range(1, len(tmp_acor[0]) + 1), tmp_acor[3], 'go', label="Box-Pierce values")
+    plt.xticks(np.arange(1, len(tmp_acor[0]) + 1, 1.0))
+    plt.axhline(y=0.05, color="red", label="5% critical value")
     plt.title("$Time\ Series\ " + title + "$")
     plt.legend()
     plt.show()
     # Return the statistics:
     col_index = ["Ljung-Box: X-squared", "Ljung-Box: p-value", "Box-Pierce: X-squared", "Box-Pierce: p-value"]
-    return pd.DataFrame(tmp_acor, index = col_index, columns = range(1, len(tmp_acor[0]) + 1))
+    return pd.DataFrame(tmp_acor, index=col_index, columns=range(1, len(tmp_acor[0]) + 1))
+
+
+def ljungbox(data, lags=12):
+    blres = acorr_ljungbox(data, lags=lags, return_df=True)
+    print(blres)
+    print("Box-Ljung test")
+    print(f"X-squared: {round(blres.tail(1)['lb_stat'].values[0], 4)}", end=", ")
+    print(f"df = {len(blres)}", end=", ")
+    print(f"p-value: {blres.tail(1)['lb_pvalue'].values[0]}")
+
+
+def engle(data, lags=12):
+    arch = het_arch(data, nlags=lags)
+    print("Lagrange multiplier test")
+    print(f"Chi-squared: {round(arch[0], 4)}", end=", ")
+    print(f"p-value: {arch[1]}")
