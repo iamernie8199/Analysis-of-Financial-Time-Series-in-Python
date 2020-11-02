@@ -48,3 +48,11 @@ print('Return:')
 print(ar0.forecast(5))
 print('Volatility:')
 print(garch.forecast(horizon=5).variance.tail(1) ** 0.5)
+
+# standardized Student-t distribution
+garch = arch.arch_model(ar0.resid, p=1, q=1, dist='t').fit(update_freq=0)
+print(garch.summary())
+# autocorTest
+stres = garch.std_resid
+ljungbox(stres, lags=10)
+ljungbox(stres**2, lags=10)
